@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#160f11">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PushUp">
+    <meta name="description" content="Cuenta tus push-ups, sigue tus entrenamientos y mide tu progreso.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <title>PushUp — tu entrenador</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="PushUp inicio">
+          <span class="brand-mark">P</span>
+          <span>PUSH<span class="brand-light">UP</span></span>
+        </a>
+        <span class="today-label" id="today-label"></span>
+      </header>
+
+      <section class="view active" id="train-view" aria-labelledby="train-title">
+        <div class="page-heading">
+          <p class="eyebrow">TU ENTRENAMIENTO</p>
+          <h1 id="train-title">A tu ritmo.<br><span>Rep a rep.</span></h1>
+        </div>
+
+        <div class="mode-switch" role="tablist" aria-label="Modo de entrenamiento">
+          <button class="mode-button selected" id="free-mode-button" role="tab" aria-selected="true">Modo libre</button>
+          <button class="mode-button" id="plan-mode-button" role="tab" aria-selected="false">Plan de hoy</button>
+        </div>
+
+        <section class="counter-card" id="free-panel">
+          <div class="counter-meta">
+            <span class="live-dot" id="free-status-dot"></span>
+            <span id="free-status">LISTO CUANDO TÚ LO ESTÉS</span>
+          </div>
+          <div class="counter-number" id="free-count">0</div>
+          <p class="counter-instruction" id="free-instruction">Toca el botón con la nariz al bajar</p>
+          <button class="tap-zone" id="free-tap" aria-label="Contar una push-up" disabled>
+            <span class="tap-icon">↓</span>
+            <span>TOCA PARA CONTAR</span>
+          </button>
+          <div class="counter-footer">
+            <span id="free-time">00:00</span>
+            <button class="text-button" id="free-toggle">Empezar sesión</button>
+          </div>
+        </section>
+
+        <section class="counter-card hidden" id="plan-panel">
+          <div class="counter-meta">
+            <span class="live-dot" id="plan-status-dot"></span>
+            <span id="plan-status">SERIES DE HOY</span>
+          </div>
+          <div class="plan-day-title" id="plan-day">SESIÓN 1</div>
+          <p class="plan-summary" id="plan-summary"></p>
+          <div class="set-indicator" id="set-indicator" aria-live="polite"></div>
+          <div class="counter-number plan-count" id="plan-count">0</div>
+          <p class="counter-instruction" id="plan-instruction">Empieza cuando estés listo</p>
+          <button class="tap-zone" id="plan-tap" aria-label="Contar una push-up" disabled>
+            <span class="tap-icon">↓</span>
+            <span>TOCA PARA CONTAR</span>
+          </button>
+          <div class="rest-panel hidden" id="rest-panel">
+            <span id="rest-message">RELÁJATE Y RECUPERA</span>
+            <strong id="rest-countdown">10</strong>
+            <span>SEGUNDOS</span>
+          </div>
+          <div class="counter-footer">
+            <span id="plan-progress">0 / 0</span>
+            <button class="text-button" id="plan-toggle">Empezar plan</button>
+          </div>
+        </section>
+
+        <p class="tip"><span>TIP</span> Coloca el iPhone en el suelo, con la pantalla hacia arriba. Cada toque cuenta una repetición.</p>
+      </section>
+
+      <section class="view" id="plan-view" aria-labelledby="plan-settings-title">
+        <div class="page-heading">
+          <p class="eyebrow">ENTRENADOR PERSONAL</p>
+          <h1 id="plan-settings-title">Un plan que<br><span>crece contigo.</span></h1>
+          <p class="page-description">Define tu punto de partida y tu objetivo. Ajustaremos las series poco a poco.</p>
+        </div>
+
+        <form class="settings-card" id="plan-form">
+          <label for="current-max">¿Cuántas push-ups haces seguidas hoy?</label>
+          <div class="input-wrap">
+            <input id="current-max" name="currentMax" type="number" min="1" max="200" value="10" inputmode="numeric" required>
+            <span>REPETICIONES</span>
+          </div>
+          <label for="target-max">¿Cuál es tu objetivo?</label>
+          <div class="input-wrap">
+            <input id="target-max" name="target" type="number" min="2" max="200" value="20" inputmode="numeric" required>
+            <span>REPETICIONES</span>
+          </div>
+          <p class="form-hint">Empiezas con 3 series. Las repeticiones aumentan después de cada sesión completa y se añade una serie cada dos sesiones, hasta 6. Descansa 60 segundos entre series y deja 48 horas entre entrenamientos. El objetivo es gradual: detente si sientes dolor.</p>
+          <button class="primary-button" type="submit">Guardar mi plan</button>
+          <p class="save-message" id="plan-save-message" aria-live="polite"></p>
+        </form>
+
+        <div class="progress-card">
+          <div class="progress-heading">
+            <div>
+              <p class="eyebrow">TU AVANCE</p>
+              <h2 id="progress-title">Vamos paso a paso</h2>
+            </div>
+            <span class="progress-badge" id="workout-count">0 sesiones</span>
+          </div>
+          <div class="progress-track"><span id="progress-bar"></span></div>
+          <p class="progress-caption" id="progress-caption"></p>
+        </div>
+      </section>
+
+      <section class="view" id="history-view" aria-labelledby="history-title">
+        <div class="page-heading">
+          <p class="eyebrow">CADA REP CUENTA</p>
+          <h1 id="history-title">Tu progreso<br><span>en el tiempo.</span></h1>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><strong id="total-reps">0</strong><span>REPETICIONES</span></div>
+          <div class="stat-card"><strong id="total-sessions">0</strong><span>SESIONES</span></div>
+        </div>
+        <div class="history-list" id="history-list"></div>
+        <div class="empty-state" id="empty-history">
+          <span class="empty-icon">↗</span>
+          <h2>Tu historia empieza aquí</h2>
+          <p>Completa tu primera sesión y encontrarás aquí la fecha, la hora y tus repeticiones.</p>
+        </div>
+        <button class="secondary-button hidden" id="clear-history">Borrar historial</button>
+      </section>
+
+      <nav class="bottom-nav" aria-label="Navegación principal">
+        <button class="nav-button active" data-view="train-view" aria-current="page">
+          <span class="nav-icon">◎</span><span>Entrenar</span>
+        </button>
+        <button class="nav-button" data-view="plan-view">
+          <span class="nav-icon">⌁</span><span>Mi plan</span>
+        </button>
+        <button class="nav-button" data-view="history-view">
+          <span class="nav-icon">▤</span><span>Historial</span>
+        </button>
+      </nav>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
